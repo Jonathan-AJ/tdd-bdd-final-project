@@ -43,18 +43,17 @@ def step_impl(context):
         context.resp = requests.delete(f"{rest_endpoint}/{product['id']}")
         assert(context.resp.status_code == HTTP_204_NO_CONTENT)
 
+    #
     # load the database with new products
     #
     for row in context.table:
-    # create payload to include product's name, description, price, availability, category.
         payload = {
             "name": row['name'],
-            "description":row['description'],
+            "description": row['description'],
             "price": row['price'],
-            "available":row['available'] in ['True', 'true', '1'],
-            "category":row['category']
+            "available": row['available'] in ['True', 'true', '1'],
+            "category": row['category']
         }
-    # send a POST request to the REST endpoint.
-    context.step = requests.post(rest_endpoint, json=payload)
-    # assert that the HTTP status code of the response is equal to 201.
-    assert contex.resp.status_code == HTTP_201_CREATED
+        context.resp = requests.post(rest_endpoint, json=payload)
+        assert context.resp.status_code == HTTP_201_CREATED
+    
